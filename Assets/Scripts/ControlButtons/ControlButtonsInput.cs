@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace LamminlunSimte.CustomSudoku.ControlButtons {
+namespace ControlButtons {
     [RequireComponent(typeof(UnityEngine.UI.Button))]
     public class ControlButtonsInput : MonoBehaviour {
         public enum ControlType {

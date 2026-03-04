@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace LamminlunSimte.CustomSudoku.ControlButtons {
+namespace ControlButtons {
     public class ControlButtonsUI : MonoBehaviour {
         [SerializeField] private TMPro.TMP_Text _buttonText;
 
