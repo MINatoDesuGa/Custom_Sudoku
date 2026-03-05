@@ -9,12 +9,12 @@ namespace SudokuCell {
         private const float HOLD_ACTION_TRIGGER_TIME_IN_SEC = 0.8f;
         private const float DOUBLE_TAP_ACTION_TRIGGER_TIME_IN_SEC = 0.2f;
 
-        private static SudokuCellInput _previous_Input;
+        private static SudokuCellInput _previous_Input; //keep track of previous cell to disable
 
         public event Action OnDeselect;
-        public event Action OnSelect;
-        public event Action OnHold;
-        public event Action OnDoubleTap;
+        public event Action OnSelect; //Normal value input
+        public event Action OnHold; //This should activate pencil mode
+        public event Action OnDoubleTap; //This should clear the cell value
         public event Action<int> OnNumberInput;
 
         [SerializeField]

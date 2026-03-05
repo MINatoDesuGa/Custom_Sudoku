@@ -22,11 +22,13 @@ namespace SudokuCell {
             _associatedInput.OnSelect += OnSelect;
             _associatedInput.OnDeselect += OnDeselect;
             _associatedInput.OnNumberInput += OnNumberInput;
+            _associatedInput.OnDoubleTap += ClearNumberText;
         }
         private void OnDisable() {
             _associatedInput.OnSelect -= OnSelect;
             _associatedInput.OnDeselect -= OnDeselect;
             _associatedInput.OnNumberInput -= OnNumberInput;
+            _associatedInput.OnDoubleTap -= ClearNumberText;
         }
         #endregion
 
@@ -39,6 +41,9 @@ namespace SudokuCell {
         }
         private void OnNumberInput(int number) { 
             _numberText.text = number.ToString();        
+        }
+        private void ClearNumberText() { 
+            _numberText.text = string.Empty;    
         }
         #endregion
     }
