@@ -9,6 +9,18 @@ namespace SudokuCell {
         private void Awake() {
             _associatedInput = GetComponent<SudokuCellInput>();
         }
+        private void OnEnable() {
+            _associatedInput.OnNumberInput += OnNumberInput;    
+        }
+        private void OnDisable() {
+            _associatedInput.OnNumberInput -= OnNumberInput;
+        }
+        #endregion
+
+        #region Event Listeners
+        private void OnNumberInput(int number) { 
+            _data.UpdateAssignedNumber(number);    
+        }
         #endregion
     }
 }

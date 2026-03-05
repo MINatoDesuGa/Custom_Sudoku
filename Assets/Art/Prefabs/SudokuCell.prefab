@@ -32,7 +32,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5925925118266710390}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -67,6 +68,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83e7a80e803be484a9477d7bf1d54838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SudokuCell.SudokuCellUI
+  _cellBG: {fileID: 5675898458816269228}
+  _numberText: {fileID: 780403232212133151}
+  _selectedColor: {r: 1, g: 0.9671434, b: 0.2971698, a: 1}
 --- !u!114 &2571072737077659054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,6 +83,156 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c52cae884a9c25408cd1965164dcc8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SudokuCell.SudokuCellInput
+  _inputActionMap:
+    m_Name: Input
+    m_Id: 83d1715b-623e-4402-84ed-68a25d2decbb
+    m_Asset: {fileID: 0}
+    m_Actions:
+    - m_Name: Input_1
+      m_Type: 1
+      m_ExpectedControlType: Button
+      m_Id: 497cc77d-4ba0-47a5-b27b-159cff68c91e
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    - m_Name: Input_2
+      m_Type: 1
+      m_ExpectedControlType: Button
+      m_Id: fe937ffd-0c3f-4330-80bf-4f9773c884f7
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    - m_Name: Input_3
+      m_Type: 1
+      m_ExpectedControlType: Button
+      m_Id: 78a71d86-1e14-495c-b3fd-a7ce2e13204e
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    - m_Name: Input_4
+      m_Type: 1
+      m_ExpectedControlType: Button
+      m_Id: 609008ec-9e04-4946-aaed-60affac4ea65
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    - m_Name: Input_5
+      m_Type: 1
+      m_ExpectedControlType: Button
+      m_Id: 88c18f93-5382-490d-9444-20ddb6b418ff
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    - m_Name: Input_6
+      m_Type: 1
+      m_ExpectedControlType: Button
+      m_Id: 8f6e6794-67bc-4213-a400-13721bab3b1c
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    - m_Name: Input_7
+      m_Type: 1
+      m_ExpectedControlType: Button
+      m_Id: 1c851c77-7295-4f73-9bd9-fcb4874713be
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    - m_Name: Input_8
+      m_Type: 1
+      m_ExpectedControlType: Button
+      m_Id: 31ba107c-80d7-4377-beaa-c4d88708215c
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    - m_Name: Input_9
+      m_Type: 1
+      m_ExpectedControlType: Button
+      m_Id: 70fbefc2-893d-435d-8cdb-f8513b1c4d6b
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Bindings:
+    - m_Name: 
+      m_Id: f5d4f422-c657-4fb6-9f22-b71f78e17588
+      m_Path: <Keyboard>/1
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Input_1
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 9486c597-0a88-4574-9e35-7bef698abe8f
+      m_Path: <Keyboard>/2
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Input_2
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 40542f89-5490-40f6-94c6-2abf70477fd4
+      m_Path: <Keyboard>/3
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Input_3
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 67176c16-461b-44a6-930e-7f7d88266292
+      m_Path: <Keyboard>/4
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Input_4
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 10b682ca-9153-4407-8349-581e52bdbdc1
+      m_Path: <Keyboard>/5
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Input_5
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 37cf8e3b-982d-4f7a-a482-b6978ec94cbe
+      m_Path: <Keyboard>/6
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Input_6
+      m_Flags: 0
+    - m_Name: 
+      m_Id: c9c6dd1d-8e49-4ce1-be10-0276d9f576b6
+      m_Path: <Keyboard>/7
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Input_7
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 28671470-cde4-401b-b3ec-be7a016a75ca
+      m_Path: <Keyboard>/8
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Input_8
+      m_Flags: 0
+    - m_Name: 
+      m_Id: c6e60960-2676-4642-97a2-09c3c389c0ee
+      m_Path: <Keyboard>/9
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Input_9
+      m_Flags: 0
 --- !u!222 &3063653930598926042
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -117,3 +271,140 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &8929828067724220454
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5925925118266710390}
+  - component: {fileID: 1503781446873561367}
+  - component: {fileID: 780403232212133151}
+  m_Layer: 5
+  m_Name: NumberText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5925925118266710390
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929828067724220454}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6306573642877069563}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -10, y: -10}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1503781446873561367
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929828067724220454}
+  m_CullTransparentMesh: 1
+--- !u!114 &780403232212133151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929828067724220454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 50
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 50
+  m_fontSizeMax: 70
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 4096
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
