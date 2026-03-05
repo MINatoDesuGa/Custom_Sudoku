@@ -56,6 +56,7 @@ MonoBehaviour:
   _data:
     <Row>k__BackingField: 0
     <Col>k__BackingField: 0
+    <AssignedNumber>k__BackingField: 0
 --- !u!114 &7099693375775317017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,6 +72,7 @@ MonoBehaviour:
   _cellBG: {fileID: 5675898458816269228}
   _numberText: {fileID: 780403232212133151}
   _selectedColor: {r: 1, g: 0.9671434, b: 0.2971698, a: 1}
+  _invalidColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &2571072737077659054
 MonoBehaviour:
   m_ObjectHideFlags: 0

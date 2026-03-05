@@ -4,7 +4,7 @@ using UnityEngine;
 namespace SudokuCell {
     [RequireComponent(typeof(SudokuCellInput))]
     public class SudokuCellController : MonoBehaviour {
-        public static event Action<SudokuCellData> OnDataUpdated;
+        public static event Action<SudokuCellData, SudokuCellInput> OnDataUpdated;
 
         [SerializeField] private SudokuCellData _data;
         private SudokuCellInput _associatedInput;
@@ -25,11 +25,11 @@ namespace SudokuCell {
         #region Event Listeners
         private void OnNumberInput(int number) { 
             _data.UpdateAssignedNumber(number);    
-            OnDataUpdated?.Invoke(_data);
+            OnDataUpdated?.Invoke(_data, _associatedInput);
         }
         private void ClearAssignedNumber() {
             _data.UpdateAssignedNumber(0);
-            OnDataUpdated?.Invoke(_data);
+            OnDataUpdated?.Invoke(_data, _associatedInput);
         }
         #endregion
     }

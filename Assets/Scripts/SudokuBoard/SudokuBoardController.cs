@@ -17,9 +17,13 @@ namespace SudokuBoard {
         #endregion
 
         #region Event Listeners
-        private void OnSudokuCellDataUpdated(SudokuCell.SudokuCellData cellData) {
+        private void OnSudokuCellDataUpdated(SudokuCell.SudokuCellData cellData, SudokuCell.SudokuCellInput inputHandler) {
             _sudokuBoardData.UpdateData(cellData);
+
+            if(cellData.AssignedNumber is 0) return;
+
             if( _sudokuBoardData.IsCellValid(cellData) ) {
+                inputHandler.OnInputValidated?.Invoke(true);
                 print("valid input value");
                 _sudokuBoardData.CheckIfSudokuSolved(out bool isSudokuSolved);
                 if(isSudokuSolved) {
@@ -28,6 +32,7 @@ namespace SudokuBoard {
                 }
             } else {
                 print("invalid input value");
+                inputHandler.OnInputValidated?.Invoke(false);
             }
         }
         #endregion

@@ -8,6 +8,7 @@ namespace SudokuCell {
 
         [Header("Settings")]
         [SerializeField] private Color _selectedColor;
+        [SerializeField] private Color _invalidColor;
         private Color _defaultColor;
 
 
@@ -23,21 +24,23 @@ namespace SudokuCell {
             _associatedInput.OnDeselect += OnDeselect;
             _associatedInput.OnNumberInput += OnNumberInput;
             _associatedInput.OnDoubleTap += ClearNumberText;
+            _associatedInput.OnInputValidated += OnInputValidated;
         }
         private void OnDisable() {
             _associatedInput.OnSelect -= OnSelect;
             _associatedInput.OnDeselect -= OnDeselect;
             _associatedInput.OnNumberInput -= OnNumberInput;
             _associatedInput.OnDoubleTap -= ClearNumberText;
+            _associatedInput.OnInputValidated -= OnInputValidated;
         }
         #endregion
 
         #region Event Listeners
         private void OnSelect() {
-            _cellBG.color = _selectedColor;
+            UpdateCellBGColor(_selectedColor);
         }
-        private void OnDeselect() { 
-            _cellBG.color = _defaultColor;    
+        private void OnDeselect() {
+            UpdateCellBGColor(_defaultColor);    
         }
         private void OnNumberInput(int number) { 
             _numberText.text = number.ToString();        
@@ -45,6 +48,13 @@ namespace SudokuCell {
         private void ClearNumberText() { 
             _numberText.text = string.Empty;    
         }
+        private void OnInputValidated(bool isValid) {
+            UpdateCellBGColor(isValid ? _selectedColor : _invalidColor);
+        }
         #endregion
+
+        private void UpdateCellBGColor(Color color) {
+            _cellBG.color = color;
+        }
     }
 }
