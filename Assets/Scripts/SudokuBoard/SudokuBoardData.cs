@@ -39,20 +39,26 @@ namespace SudokuBoard {
             }
             
             // Check row
-            for (int c = 0; c < 9; c++)
+            for (int c = 0; c < 9; c++) {
+                if(c == col) continue;
                 if (_boardArray[row, c] == num) return false;
-
+            }
+                
             // Check column
-            for (int r = 0; r < 9; r++)
+            for (int r = 0; r < 9; r++) {
+                if(r == row) continue;
                 if (_boardArray[r, col] == num) return false;
+            }
+                
 
             // Check 3×3 box
             int boxRow = (row / 3) * 3;
             int boxCol = (col / 3) * 3;
             for (int r = boxRow; r < boxRow + 3; r++)
-                for (int c = boxCol; c < boxCol + 3; c++)
+                for (int c = boxCol; c < boxCol + 3; c++) {
+                    if(r == row && c == col) continue;
                     if (_boardArray[r, c] == num) return false;
-
+                }
             return true;
         }
         #endregion
