@@ -1,12 +1,15 @@
+using System;
+using System.Collections.Generic;
+
 namespace SudokuBoard {
     public class SudokuBoardData {
         private const int GRID_MAX_SIZE = 9;
 
         private int[,] _boardArray;
-        private int _cellFilledCount;
+        private HashSet<Tuple<int, int>> _filledCellSet;
         public SudokuBoardData() {
             _boardArray = new int[GRID_MAX_SIZE, GRID_MAX_SIZE];
-            _cellFilledCount = 0;
+            _filledCellSet = new();
         }
         #region Methods
         public void ClearData() {
@@ -15,18 +18,26 @@ namespace SudokuBoard {
                     _boardArray[row, col] = 0;    
                 }    
             }
-            _cellFilledCount = 0;
+            _filledCellSet.Clear();
         }
         public void CheckIfSudokuSolved(out bool isSudokuSolved) {
-            if(_cellFilledCount is (GRID_MAX_SIZE * GRID_MAX_SIZE)) {
+            if(_filledCellSet.Count == (GRID_MAX_SIZE * GRID_MAX_SIZE)) {
                 isSudokuSolved = true;
+                return;
             }
             isSudokuSolved = false;
         }
         public void UpdateData(SudokuCell.SudokuCellData cellData) {
             _boardArray[cellData.Row, cellData.Col] = cellData.AssignedNumber;
+
+            var cellTuple = Tuple.Create(cellData.Row, cellData.Col);
+
             if(cellData.AssignedNumber != 0 ) {
-                _cellFilledCount++;
+                _filledCellSet.Add(cellTuple);
+            } else {
+                if(_filledCellSet.Contains(cellTuple)) {
+                    _filledCellSet.Remove(cellTuple);
+                }
             }
         }
         public bool IsCellValid(SudokuCell.SudokuCellData cellData = null, int row = 0, int col = 0, int num = 0) {

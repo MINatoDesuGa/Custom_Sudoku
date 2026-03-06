@@ -9,13 +9,13 @@ namespace SudokuCell {
         private const float HOLD_ACTION_TRIGGER_TIME_IN_SEC = 0.8f;
         private const float DOUBLE_TAP_ACTION_TRIGGER_TIME_IN_SEC = 0.2f;
 
-        private static SudokuCellInput _previous_Input; //keep track of previous cell to disable
 
-        public event Action OnDeselect;
+
+        public Action OnDeselect;
         public event Action OnSelect; //Normal value input
         public event Action OnHold; //This should activate pencil mode
         public event Action OnDoubleTap; //This should clear the cell value
-        public event Action<int> OnNumberInput;
+        public Action<int> OnNumberInput;
 
         [SerializeField]
         private InputActionMap _inputActionMap;
@@ -30,9 +30,6 @@ namespace SudokuCell {
             _holdTime = new(HOLD_ACTION_TRIGGER_TIME_IN_SEC);
             _doubleTapTime = new(DOUBLE_TAP_ACTION_TRIGGER_TIME_IN_SEC);
         }
-        private void OnDestroy() {
-            _previous_Input = null;
-        }
         #endregion
 
         #region Event Listeners
@@ -45,36 +42,12 @@ namespace SudokuCell {
         public void OnPointerDown(PointerEventData eventData) {
             OnSelect?.Invoke();
 
-            if (_previous_Input != null && _previous_Input != this) {
-                ActivateActionMap(false, _previous_Input._inputActionMap);
-                _previous_Input.OnDeselect?.Invoke();
-            }
-
             ActivateActionMap(true);
 
             HandleDoubleTapAction();
             HandleHoldAction();
 
             #region local functions
-            void ActivateActionMap(bool active, InputActionMap inputActionMap = null) {
-                if (inputActionMap == null) {
-                    inputActionMap = _inputActionMap;
-                    _previous_Input = this;
-                }
-
-                if (active) {
-                    inputActionMap.Enable();
-                    for (int id = 0; id < inputActionMap.actions.Count; id++) {
-                        inputActionMap.actions[id].performed += OnActionPerformed;
-                    }
-                } else {
-                    inputActionMap.Disable();
-                    for (int id = 0; id < inputActionMap.actions.Count; id++) {
-                        inputActionMap.actions[id].performed -= OnActionPerformed;
-                    }
-                }
-
-            }
             void HandleDoubleTapAction() {
                 if (!_isTappedOnce) {
                     _isTappedOnce = true;
@@ -111,6 +84,23 @@ namespace SudokuCell {
                     coroutine = null;
                 }
             }
+        }
+        #endregion
+
+        #region Public methods
+        public void ActivateActionMap(bool active) {
+            if (active) {
+                _inputActionMap.Enable();
+                for (int id = 0; id < _inputActionMap.actions.Count; id++) {
+                    _inputActionMap.actions[id].performed += OnActionPerformed;
+                }
+            } else {
+                _inputActionMap.Disable();
+                for (int id = 0; id < _inputActionMap.actions.Count; id++) {
+                    _inputActionMap.actions[id].performed -= OnActionPerformed;
+                }
+            }
+
         }
         #endregion
     }

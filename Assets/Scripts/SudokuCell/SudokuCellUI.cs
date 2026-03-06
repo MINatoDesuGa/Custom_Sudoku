@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utility;
 
 namespace SudokuCell {
     [RequireComponent (typeof(SudokuCellInput))]
@@ -19,28 +20,26 @@ namespace SudokuCell {
 
         #region Public methods
         public void ChangeBGColorOnSelected() {
-            UpdateCellBGColor(_selectedColor);
+            _cellBG.ChangeColor(_selectedColor);
         }
         public void ChangeBGColorOnDeselect() {
-            UpdateCellBGColor(_defaultColor);    
+            _cellBG.ChangeColor(_defaultColor);    
         }
         public void ChangeNumberText(int number) { 
-            UpdateNumberText(number.ToString());        
+            _numberText.SetText(number.ToString());        
         }
         public void ClearNumberText() { 
-            UpdateNumberText(string.Empty);    
+            _numberText.SetText(string.Empty);
         }
         public void ChangeBGColorOnInputValidated(bool isValid) {
-            UpdateCellBGColor(isValid ? _selectedColor : _invalidColor);
+            _cellBG.ChangeColor(isValid ? _selectedColor : _invalidColor);
         }
-        #endregion
-
-        #region Private methods
-        private void UpdateNumberText(string number = "") {
-            _numberText.text = number;
-        }
-        private void UpdateCellBGColor(Color color) {
-            _cellBG.color = color;
+        public void SetInteractable(bool isInteractable) {
+            if(isInteractable) {
+                _cellBG.EnableInteraction();
+            } else {
+                _cellBG.DisableInteraction();
+            }
         }
         #endregion
     }
