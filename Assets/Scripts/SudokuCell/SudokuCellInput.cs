@@ -11,7 +11,6 @@ namespace SudokuCell {
 
         private static SudokuCellInput _previous_Input; //keep track of previous cell to disable
 
-        public Action<bool> OnInputValidated;
         public event Action OnDeselect;
         public event Action OnSelect; //Normal value input
         public event Action OnHold; //This should activate pencil mode

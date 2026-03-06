@@ -11,50 +11,37 @@ namespace SudokuCell {
         [SerializeField] private Color _invalidColor;
         private Color _defaultColor;
 
-
-        private SudokuCellInput _associatedInput;
-
         #region Mono
-        private void Awake() {
-            _associatedInput = GetComponent<SudokuCellInput>();
+        private void Start() {
             _defaultColor = _cellBG.color;
-        }
-        private void OnEnable() {
-            _associatedInput.OnSelect += OnSelect;
-            _associatedInput.OnDeselect += OnDeselect;
-            _associatedInput.OnNumberInput += OnNumberInput;
-            _associatedInput.OnDoubleTap += ClearNumberText;
-            _associatedInput.OnInputValidated += OnInputValidated;
-        }
-        private void OnDisable() {
-            _associatedInput.OnSelect -= OnSelect;
-            _associatedInput.OnDeselect -= OnDeselect;
-            _associatedInput.OnNumberInput -= OnNumberInput;
-            _associatedInput.OnDoubleTap -= ClearNumberText;
-            _associatedInput.OnInputValidated -= OnInputValidated;
         }
         #endregion
 
-        #region Event Listeners
-        private void OnSelect() {
+        #region Public methods
+        public void ChangeBGColorOnSelected() {
             UpdateCellBGColor(_selectedColor);
         }
-        private void OnDeselect() {
+        public void ChangeBGColorOnDeselect() {
             UpdateCellBGColor(_defaultColor);    
         }
-        private void OnNumberInput(int number) { 
-            _numberText.text = number.ToString();        
+        public void ChangeNumberText(int number) { 
+            UpdateNumberText(number.ToString());        
         }
-        private void ClearNumberText() { 
-            _numberText.text = string.Empty;    
+        public void ClearNumberText() { 
+            UpdateNumberText(string.Empty);    
         }
-        private void OnInputValidated(bool isValid) {
+        public void ChangeBGColorOnInputValidated(bool isValid) {
             UpdateCellBGColor(isValid ? _selectedColor : _invalidColor);
         }
         #endregion
 
+        #region Private methods
+        private void UpdateNumberText(string number = "") {
+            _numberText.text = number;
+        }
         private void UpdateCellBGColor(Color color) {
             _cellBG.color = color;
         }
+        #endregion
     }
 }
