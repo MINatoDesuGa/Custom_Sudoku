@@ -25,8 +25,9 @@ namespace SudokuCell {
         public void ChangeBGColorOnDeselect() {
             _cellBG.ChangeColor(_defaultColor);    
         }
-        public void ChangeNumberText(int number) { 
-            _numberText.SetText(number.ToString());        
+        public void ChangeNumberText(int number, TMPro.FontStyles fontStyle = TMPro.FontStyles.Normal) { 
+            _numberText.SetText(number.ToString());
+            _numberText.fontStyle = fontStyle;
         }
         public void ClearNumberText() { 
             _numberText.SetText(string.Empty);

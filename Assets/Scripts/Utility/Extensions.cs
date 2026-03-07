@@ -20,13 +20,14 @@ namespace Utility {
         #endregion
 
         #region Image
+        private const float DISABLED_IMAGE_ALPHA = 0.6f;
         public static void EnableInteraction(this Image image) {
             image.raycastTarget = true;
             image.ChangeAlpha(1.0f);
         }
         public static void DisableInteraction(this Image image) {
             image.raycastTarget = false;
-            image.ChangeAlpha(0.5f);
+            image.ChangeAlpha(DISABLED_IMAGE_ALPHA);
         }
         public static void ChangeColor(this Image image, Color color) { 
             image.color = color;    

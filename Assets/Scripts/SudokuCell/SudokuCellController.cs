@@ -50,11 +50,13 @@ namespace SudokuCell {
             _associatedUI.ChangeBGColorOnDeselect();
         }
         private void OnNumberInput(int number) {
+            TMPro.FontStyles fontStyle = TMPro.FontStyles.Normal;
             if (GameModeController.Current_Game_Mode is GameModeType.Edit) {
                 _data.UpdateIsEditedCell(true);
+                fontStyle = TMPro.FontStyles.Bold;
             }
 
-            _associatedUI.ChangeNumberText(number);
+            _associatedUI.ChangeNumberText(number, fontStyle);
             _data.UpdateAssignedNumber(number);
             OnDataUpdated?.Invoke(this);
         }
