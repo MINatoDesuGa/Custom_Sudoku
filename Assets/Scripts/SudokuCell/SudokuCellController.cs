@@ -1,11 +1,13 @@
-using System;
-using UnityEngine;
 using GameMode;
+using System;
+using Unity.VisualScripting;
+using UnityEngine;
 
 namespace SudokuCell {
     [RequireComponent(typeof(SudokuCellInput), typeof(SudokuCellUI))]
     public class SudokuCellController : MonoBehaviour {
-        public static event Action<SudokuCellController> OnDataUpdated;
+        public static event Action<SudokuCellController> On_Data_Updated;
+        public static event Action<int, bool> On_Number_Fill_Complete;
         public static SudokuCellInput Current_Selected_Cell_Input { get; private set; } //keep track of previous cell to disable
 
         [SerializeField] private SudokuCellData _data;
@@ -23,6 +25,7 @@ namespace SudokuCell {
             _associatedInput.OnNumberInput += OnNumberInput;
             _associatedInput.OnDoubleTap += ClearAssignedNumber;
             GameModeController.On_Game_Mode_Changed += OnGameModeChanged;
+            UI.TopUIController.On_Game_Reset += Reset;
         }
         private void OnDisable() {
             _associatedInput.OnSelect -= OnSelect;
@@ -30,10 +33,24 @@ namespace SudokuCell {
             _associatedInput.OnNumberInput -= OnNumberInput;
             _associatedInput.OnDoubleTap -= ClearAssignedNumber;
             GameModeController.On_Game_Mode_Changed -= OnGameModeChanged;
+            UI.TopUIController.On_Game_Reset -= Reset;
         }
         #endregion
 
         #region Event Listeners
+        private void Reset() {
+            if(_data.IsEditedCell) {
+                _associatedUI.SetInteractable(true);
+            }
+
+            _data.Reset();
+            if (_data.IsSelected) {
+                Current_Selected_Cell_Input.ActivateActionMap(false);
+                OnDeselect();
+                Current_Selected_Cell_Input = null;
+            }
+            ClearAssignedNumber();
+        }
         private void OnSelect() {
             if (GameModeController.Current_Game_Mode is GameModeType.Play
                 && _data.IsEditedCell) {
@@ -58,7 +75,15 @@ namespace SudokuCell {
 
             _associatedUI.ChangeNumberText(number, fontStyle);
             _data.UpdateAssignedNumber(number);
-            OnDataUpdated?.Invoke(this);
+
+            _data.CheckAssignedNumberFilledComplete(out bool isFilledComplete);
+
+            if(isFilledComplete) {
+                print($"{number} filled completed");
+                On_Number_Fill_Complete?.Invoke(number, true);
+            }
+
+            On_Data_Updated?.Invoke(this);
         }
         private void ClearAssignedNumber() {
             if (GameModeController.Current_Game_Mode is GameModeType.Edit) {
@@ -66,8 +91,16 @@ namespace SudokuCell {
             }
 
             _associatedUI.ClearNumberText();
+
+            _data.CheckAssignedNumberFilledComplete(out bool isFilledComplete);
+
+            if(isFilledComplete) {
+                On_Number_Fill_Complete?.Invoke(_data.AssignedNumber, false);
+                print($"{_data.AssignedNumber} was filled. Now its not");
+            }
+
             _data.UpdateAssignedNumber(0);
-            OnDataUpdated?.Invoke(this);
+            On_Data_Updated?.Invoke(this);
         }
         private void OnGameModeChanged(GameModeType gameModeType) {
             if (_data.IsSelected) {

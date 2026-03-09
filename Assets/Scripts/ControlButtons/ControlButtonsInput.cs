@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utility;
 
 namespace ControlButtons {
     [RequireComponent(typeof(UnityEngine.UI.Button))]
@@ -17,12 +18,14 @@ namespace ControlButtons {
         }
         private void OnEnable() {
             _controlButton.onClick.AddListener(OnControlButtonClick);
+            SudokuCell.SudokuCellController.On_Number_Fill_Complete += OnNumberFillCompleted;
         }
         private void Start() {
             OnControlTypeInit?.Invoke(GetNumberInputFromControlType().ToString());
         }
         private void OnDisable() {
             _controlButton.onClick.RemoveListener(OnControlButtonClick);
+            SudokuCell.SudokuCellController.On_Number_Fill_Complete -= OnNumberFillCompleted;
         }
         #endregion
 
@@ -30,6 +33,15 @@ namespace ControlButtons {
         private void OnControlButtonClick() {
             //print($"Control {_controlType} click");
             SudokuCell.SudokuCellController.Current_Selected_Cell_Input.OnNumberInput?.Invoke(GetNumberInputFromControlType());
+        }
+        private void OnNumberFillCompleted(int number, bool isFilled) {
+            if(number != GetNumberInputFromControlType()) return;
+
+            if(isFilled) { 
+                _controlButton.DisableInteraction();
+            } else {
+                _controlButton.EnableInteraction();
+            }
         }
         #endregion
 

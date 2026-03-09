@@ -38,5 +38,14 @@ namespace Utility {
             image.color = currentColor;    
         }
         #endregion
+
+        #region Button
+        public static void EnableInteraction(this Button button) {
+            button.interactable = true;
+        }
+        public static void DisableInteraction(this Button button) {
+            button.interactable = false;
+        }
+        #endregion
     }
 }
