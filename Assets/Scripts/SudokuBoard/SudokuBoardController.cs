@@ -9,14 +9,19 @@ namespace SudokuBoard {
             _sudokuBoardData = new SudokuBoardData();
         }
         private void OnEnable() {
-            SudokuCell.SudokuCellController.OnDataUpdated += OnSudokuCellDataUpdated;
+            SudokuCell.SudokuCellController.On_Data_Updated += OnSudokuCellDataUpdated;
+            UI.TopUIController.On_Game_Reset += Reset;
         }
         private void OnDisable() {
-            SudokuCell.SudokuCellController.OnDataUpdated -= OnSudokuCellDataUpdated;
+            SudokuCell.SudokuCellController.On_Data_Updated -= OnSudokuCellDataUpdated;
+            UI.TopUIController.On_Game_Reset -= Reset;
         }
         #endregion
 
         #region Event Listeners
+        private void Reset() {
+            _sudokuBoardData.ClearData();
+        }
         private void OnSudokuCellDataUpdated(SudokuCell.SudokuCellController sudokuCellController) {
             SudokuCell.SudokuCellData cellData = sudokuCellController.CellData;
             _sudokuBoardData.UpdateData(cellData);

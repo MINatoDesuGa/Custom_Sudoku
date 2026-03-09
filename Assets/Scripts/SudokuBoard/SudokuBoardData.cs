@@ -4,14 +4,15 @@ using System.Collections.Generic;
 namespace SudokuBoard {
     public class SudokuBoardData {
         private const int GRID_MAX_SIZE = 9;
+        private const int MAX_SUDOKU_CELLS = 81;
 
         private int[,] _boardArray;
-        private HashSet<Tuple<int, int>> _filledCellSet;
+        private HashSet<(int, int)> _filledCellSet;
         public SudokuBoardData() {
             _boardArray = new int[GRID_MAX_SIZE, GRID_MAX_SIZE];
             _filledCellSet = new();
         }
-        #region Methods
+        #region Public Methods
         public void ClearData() {
             for(int row = 0; row < GRID_MAX_SIZE; row++) { 
                 for(int col = 0; col < GRID_MAX_SIZE; col++) { 
@@ -21,7 +22,7 @@ namespace SudokuBoard {
             _filledCellSet.Clear();
         }
         public void CheckIfSudokuSolved(out bool isSudokuSolved) {
-            if(_filledCellSet.Count == (GRID_MAX_SIZE * GRID_MAX_SIZE)) {
+            if(_filledCellSet.Count == MAX_SUDOKU_CELLS) {
                 isSudokuSolved = true;
                 return;
             }
@@ -30,7 +31,7 @@ namespace SudokuBoard {
         public void UpdateData(SudokuCell.SudokuCellData cellData) {
             _boardArray[cellData.Row, cellData.Col] = cellData.AssignedNumber;
 
-            var cellTuple = Tuple.Create(cellData.Row, cellData.Col);
+            var cellTuple = (cellData.Row, cellData.Col);
 
             if(cellData.AssignedNumber != 0 ) {
                 _filledCellSet.Add(cellTuple);
