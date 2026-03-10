@@ -19,6 +19,7 @@ namespace Input {
         private void OnEnable() {
             _controlButton.onClick.AddListener(OnControlButtonClick);
             Controller.SudokuCellController.On_Number_Fill_Complete += OnNumberFillCompleted;
+            Controller.GameStateController.On_Game_State_Changed += OnGameStateChanged;
         }
         private void Start() {
             OnControlTypeInit?.Invoke(GetNumberInputFromControlType().ToString());
@@ -26,6 +27,7 @@ namespace Input {
         private void OnDisable() {
             _controlButton.onClick.RemoveListener(OnControlButtonClick);
             Controller.SudokuCellController.On_Number_Fill_Complete -= OnNumberFillCompleted;
+            Controller.GameStateController.On_Game_State_Changed -= OnGameStateChanged;
         }
         #endregion
 
@@ -43,8 +45,18 @@ namespace Input {
                 _controlButton.Enable_Interaction();
             }
         }
+        private void OnGameStateChanged(GameState gameState) {
+            switch(gameState) {
+                case GameState.Reset:
+                    Reset();
+                    break;
+            }
+        }
         #endregion
 
+        private void Reset() {
+            _controlButton.Enable_Interaction();
+        }
         #region Helper methods
         private int GetNumberInputFromControlType() {
             string controlType = _controlType.ToString();
