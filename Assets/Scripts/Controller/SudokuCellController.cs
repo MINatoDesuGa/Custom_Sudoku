@@ -1,23 +1,21 @@
-using GameMode;
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
-namespace SudokuCell {
-    [RequireComponent(typeof(SudokuCellInput), typeof(SudokuCellUI))]
+namespace Controller {
+    [RequireComponent(typeof(Input.SudokuCellInput), typeof(UI.SudokuCellUI))]
     public class SudokuCellController : MonoBehaviour {
         public static event Action<SudokuCellController> On_Data_Updated;
         public static event Action<int, bool> On_Number_Fill_Complete;
-        public static SudokuCellInput Current_Selected_Cell_Input { get; private set; } //keep track of previous cell to disable
+        public static Input.SudokuCellInput Current_Selected_Cell_Input { get; private set; } //keep track of previous cell to disable
 
-        [SerializeField] private SudokuCellData _data;
-        public SudokuCellData CellData { get { return _data; } }
-        private SudokuCellInput _associatedInput;
-        private SudokuCellUI _associatedUI;
+        [SerializeField] private Data.SudokuCellData _data;
+        public Data.SudokuCellData CellData { get { return _data; } }
+        private Input.SudokuCellInput _associatedInput;
+        private UI.SudokuCellUI _associatedUI;
         #region Mono
         private void Awake() {
-            _associatedInput = GetComponent<SudokuCellInput>();
-            _associatedUI = GetComponent<SudokuCellUI>();
+            _associatedInput = GetComponent<Input.SudokuCellInput>();
+            _associatedUI = GetComponent<UI.SudokuCellUI>();
         }
         private void OnEnable() {
             _associatedInput.OnSelect += OnSelect;
@@ -25,8 +23,8 @@ namespace SudokuCell {
             _associatedInput.OnNumberInput += OnNumberInput;
             _associatedInput.OnDoubleTap += ClearAssignedNumber;
             GameModeController.On_Game_Mode_Changed += OnGameModeChanged;
-            UI.TopUIController.On_Game_Reset += Reset;
-            UI.GameOverUiHandler.On_Reset_Game += Reset;
+            UI.TopPanelUI.On_Game_Reset += Reset;
+            UI.GameOverPanelUI.On_Reset_Game += Reset;
         }
         private void OnDisable() {
             _associatedInput.OnSelect -= OnSelect;
@@ -34,8 +32,8 @@ namespace SudokuCell {
             _associatedInput.OnNumberInput -= OnNumberInput;
             _associatedInput.OnDoubleTap -= ClearAssignedNumber;
             GameModeController.On_Game_Mode_Changed -= OnGameModeChanged;
-            UI.TopUIController.On_Game_Reset -= Reset;
-            UI.GameOverUiHandler.On_Reset_Game -= Reset;
+            UI.TopPanelUI.On_Game_Reset -= Reset;
+            UI.GameOverPanelUI.On_Reset_Game -= Reset;
         }
         #endregion
 

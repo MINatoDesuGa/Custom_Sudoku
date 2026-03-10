@@ -1,24 +1,24 @@
 using UnityEngine;
 
-namespace SudokuBoard {
+namespace Controller {
     public class SudokuBoardController : MonoBehaviour {
         public static event System.Action On_Sudoku_Solved;
 
-        private SudokuBoardData _sudokuBoardData;
+        private Data.SudokuBoardData _sudokuBoardData;
 
         #region Mono
         private void Awake() {
-            _sudokuBoardData = new SudokuBoardData();
+            _sudokuBoardData = new Data.SudokuBoardData();
         }
         private void OnEnable() {
-            SudokuCell.SudokuCellController.On_Data_Updated += OnSudokuCellDataUpdated;
-            UI.TopUIController.On_Game_Reset += Reset;
-            UI.GameOverUiHandler.On_Reset_Game += Reset;
+            SudokuCellController.On_Data_Updated += OnSudokuCellDataUpdated;
+            UI.TopPanelUI.On_Game_Reset += Reset;
+            UI.GameOverPanelUI.On_Reset_Game += Reset;
         }
         private void OnDisable() {
-            SudokuCell.SudokuCellController.On_Data_Updated -= OnSudokuCellDataUpdated;
-            UI.TopUIController.On_Game_Reset -= Reset;
-            UI.GameOverUiHandler.On_Reset_Game -= Reset;
+            SudokuCellController.On_Data_Updated -= OnSudokuCellDataUpdated;
+            UI.TopPanelUI.On_Game_Reset -= Reset;
+            UI.GameOverPanelUI.On_Reset_Game -= Reset;
         }
         #endregion
 
@@ -26,8 +26,8 @@ namespace SudokuBoard {
         private void Reset() {
             _sudokuBoardData.ClearData();
         }
-        private void OnSudokuCellDataUpdated(SudokuCell.SudokuCellController sudokuCellController) {
-            SudokuCell.SudokuCellData cellData = sudokuCellController.CellData;
+        private void OnSudokuCellDataUpdated(SudokuCellController sudokuCellController) {
+            Data.SudokuCellData cellData = sudokuCellController.CellData;
             _sudokuBoardData.UpdateData(cellData);
 
             if(cellData.AssignedNumber == 0) return; //no need to check if cell data was cleared

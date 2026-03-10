@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GameMode {
+namespace Controller {
     public class GameModeController : MonoBehaviour {
         public static event System.Action<GameModeType> On_Game_Mode_Changed;
         public static GameModeType Current_Game_Mode { get; private set;}

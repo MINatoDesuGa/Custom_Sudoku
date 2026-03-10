@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SudokuBoard {
+namespace Data {
     public class SudokuBoardData {
         private const int GRID_MAX_SIZE = 9;
         private const int MAX_SUDOKU_CELLS = 81;
@@ -28,7 +28,7 @@ namespace SudokuBoard {
             }
             isSudokuSolved = false;
         }
-        public void UpdateData(SudokuCell.SudokuCellData cellData) {
+        public void UpdateData(SudokuCellData cellData) {
             _boardArray[cellData.Row, cellData.Col] = cellData.AssignedNumber;
 
             var cellTuple = (cellData.Row, cellData.Col);
@@ -41,7 +41,7 @@ namespace SudokuBoard {
                 }
             }
         }
-        public bool IsCellValid(SudokuCell.SudokuCellData cellData = null, int row = 0, int col = 0, int num = 0) {
+        public bool IsCellValid(SudokuCellData cellData = null, int row = 0, int col = 0, int num = 0) {
             if(cellData == null) { 
                 num = _boardArray[row,col];
             } else {

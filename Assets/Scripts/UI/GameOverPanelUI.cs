@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using Utility;
 
 namespace UI {
-    public class GameOverUiHandler : MonoBehaviour {
+    public class GameOverPanelUI : MonoBehaviour {
         public static event System.Action On_Reset_Game;
 
         [SerializeField] private CanvasGroup _panelCanvasGroup;
@@ -12,11 +12,11 @@ namespace UI {
         #region Mono
         private void OnEnable() {
             _resetButton.onClick.AddListener(OnResetGameClick);
-            SudokuBoard.SudokuBoardController.On_Sudoku_Solved += OnSudokuSolved;
+            Controller.SudokuBoardController.On_Sudoku_Solved += OnSudokuSolved;
         }
         private void OnDisable() {
             _resetButton.onClick.RemoveListener(OnResetGameClick);
-            SudokuBoard.SudokuBoardController.On_Sudoku_Solved -= OnSudokuSolved;
+            Controller.SudokuBoardController.On_Sudoku_Solved -= OnSudokuSolved;
         }
         #endregion
 

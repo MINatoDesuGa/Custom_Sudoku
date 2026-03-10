@@ -1,8 +1,8 @@
 using UnityEngine;
 using Utility;
 
-namespace SudokuCell {
-    [RequireComponent (typeof(SudokuCellInput))]
+namespace UI {
+    [RequireComponent (typeof(Input.SudokuCellInput))]
     public class SudokuCellUI : MonoBehaviour {
         [SerializeField] private UnityEngine.UI.Image _cellBG;
         [SerializeField] private TMPro.TMP_Text _numberText;

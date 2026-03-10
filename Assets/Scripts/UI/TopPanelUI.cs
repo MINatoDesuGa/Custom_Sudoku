@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI {
-    public class TopUIController : MonoBehaviour {
+    public class TopPanelUI : MonoBehaviour {
         public static event System.Action On_Game_Reset;
 
         [SerializeField] private Button _resetButton;

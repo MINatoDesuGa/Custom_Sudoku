@@ -1,7 +1,7 @@
 using UnityEngine;
 using Utility;
 
-namespace ControlButtons {
+namespace Input {
     [RequireComponent(typeof(UnityEngine.UI.Button))]
     public class ControlButtonsInput : MonoBehaviour {
         public enum ControlType {
@@ -18,21 +18,21 @@ namespace ControlButtons {
         }
         private void OnEnable() {
             _controlButton.onClick.AddListener(OnControlButtonClick);
-            SudokuCell.SudokuCellController.On_Number_Fill_Complete += OnNumberFillCompleted;
+            Controller.SudokuCellController.On_Number_Fill_Complete += OnNumberFillCompleted;
         }
         private void Start() {
             OnControlTypeInit?.Invoke(GetNumberInputFromControlType().ToString());
         }
         private void OnDisable() {
             _controlButton.onClick.RemoveListener(OnControlButtonClick);
-            SudokuCell.SudokuCellController.On_Number_Fill_Complete -= OnNumberFillCompleted;
+            Controller.SudokuCellController.On_Number_Fill_Complete -= OnNumberFillCompleted;
         }
         #endregion
 
         #region Event Listeners
         private void OnControlButtonClick() {
             //print($"Control {_controlType} click");
-            SudokuCell.SudokuCellController.Current_Selected_Cell_Input.OnNumberInput?.Invoke(GetNumberInputFromControlType());
+            Controller.SudokuCellController.Current_Selected_Cell_Input.OnNumberInput?.Invoke(GetNumberInputFromControlType());
         }
         private void OnNumberFillCompleted(int number, bool isFilled) {
             if(number != GetNumberInputFromControlType()) return;
