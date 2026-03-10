@@ -48,11 +48,11 @@ namespace UI {
         private void UpdateGameModeText(GameState gameState) {
             switch (gameState) {
                 case GameState.Solving:
-                    _gameModeButtonText.SetText(SOLVE_MODE_BUTTON_TEXT);
+                    _gameModeButtonText.SetText(EDIT_MODE_BUTTON_TEXT);
                     _gameModeText.SetText(SOLVE_MODE_TEXT);
                     break;
                 case GameState.Editing:
-                    _gameModeButtonText.SetText(EDIT_MODE_BUTTON_TEXT);
+                    _gameModeButtonText.SetText(SOLVE_MODE_BUTTON_TEXT);
                     _gameModeText.SetText(EDIT_MODE_TEXT);
                     break;
             }
