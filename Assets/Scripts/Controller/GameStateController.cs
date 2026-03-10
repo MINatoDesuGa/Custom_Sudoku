@@ -15,7 +15,10 @@ namespace Controller {
 
         #region Public static methods
         public static void UpdateGameState(GameState state) {
-            Current_Game_State = state;
+            if(state is not GameState.Reset) {
+                Current_Game_State = state;
+            }
+            
             On_Game_State_Changed?.Invoke(state);
             #if UNITY_EDITOR
             print($"GAME_STATE -> <color=green>{Current_Game_State}</color>");
@@ -26,5 +29,5 @@ namespace Controller {
 }
 
 public enum GameState {
-    Solving, Editing, GameOver
+    Solving, Editing, GameOver, Reset
 }

@@ -50,7 +50,7 @@ namespace Data {
                 return;
             }
 
-            Debug.Log($"filled state {_assignedNumberTrackingMap[AssignedNumber].Count}");
+           // Debug.Log($"filled state {_assignedNumberTrackingMap[AssignedNumber].Count}");
             isFilledComplete = _assignedNumberTrackingMap[AssignedNumber].Count == 9;
         }
         public void UpdateIsSelected(bool isSelected) {

@@ -23,8 +23,6 @@ namespace Controller {
             _associatedInput.OnNumberInput += OnNumberInput;
             _associatedInput.OnDoubleTap += ClearAssignedNumber;
             GameStateController.On_Game_State_Changed += OnGameStateChanged;
-            UI.TopPanelUI.On_Game_Reset += Reset;
-            UI.GameOverPanelUI.On_Reset_Game += Reset;
         }
         private void OnDisable() {
             _associatedInput.OnSelect -= OnSelect;
@@ -32,8 +30,6 @@ namespace Controller {
             _associatedInput.OnNumberInput -= OnNumberInput;
             _associatedInput.OnDoubleTap -= ClearAssignedNumber;
             GameStateController.On_Game_State_Changed -= OnGameStateChanged;
-            UI.TopPanelUI.On_Game_Reset -= Reset;
-            UI.GameOverPanelUI.On_Reset_Game -= Reset;
         }
         #endregion
 
@@ -111,6 +107,9 @@ namespace Controller {
                     break;
                 case GameState.Editing:
                     _associatedUI.SetInteractable(true);
+                    break;
+                case GameState.Reset:
+                    Reset();
                     break;
             }
         }

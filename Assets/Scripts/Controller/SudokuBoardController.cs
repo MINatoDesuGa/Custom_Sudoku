@@ -12,19 +12,21 @@ namespace Controller {
         }
         private void OnEnable() {
             SudokuCellController.On_Data_Updated += OnSudokuCellDataUpdated;
-            UI.TopPanelUI.On_Game_Reset += Reset;
-            UI.GameOverPanelUI.On_Reset_Game += Reset;
+            GameStateController.On_Game_State_Changed += OnGameStateChanged;
         }
         private void OnDisable() {
             SudokuCellController.On_Data_Updated -= OnSudokuCellDataUpdated;
-            UI.TopPanelUI.On_Game_Reset -= Reset;
-            UI.GameOverPanelUI.On_Reset_Game -= Reset;
+            GameStateController.On_Game_State_Changed += OnGameStateChanged;
         }
         #endregion
 
         #region Event Listeners
-        private void Reset() {
-            _sudokuBoardData.ClearData();
+        private void OnGameStateChanged(GameState gameState) {
+            switch(gameState) { 
+                case GameState.Reset:
+                    Reset();
+                    break;
+            }
         }
         private void OnSudokuCellDataUpdated(SudokuCellController sudokuCellController) {
             Data.SudokuCellData cellData = sudokuCellController.CellData;
@@ -47,5 +49,9 @@ namespace Controller {
             }
         }
         #endregion
+
+        private void Reset() {
+            _sudokuBoardData.ClearData();
+        }
     }
 }

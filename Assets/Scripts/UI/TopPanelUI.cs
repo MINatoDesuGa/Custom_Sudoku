@@ -12,9 +12,6 @@ namespace UI {
         private const string SOLVE_MODE_TEXT = "SOLVING";
         private const string EDIT_MODE_TEXT = "EDITING";
 
-
-        public static event System.Action On_Game_Reset;
-
         [Header("Reset Game")]
         [SerializeField] private Button _resetButton;
         [Header("Game Mode")]
@@ -38,7 +35,7 @@ namespace UI {
 
         #region Event Listeners
         private void OnResetClick() {
-            On_Game_Reset?.Invoke();
+            Controller.GameStateController.UpdateGameState(GameState.Reset);
         }
         private void OnGameModeChangButtonClick() {
             GameState newGameState = Controller.GameStateController.Current_Game_State == GameState.Editing ? GameState.Solving : GameState.Editing;

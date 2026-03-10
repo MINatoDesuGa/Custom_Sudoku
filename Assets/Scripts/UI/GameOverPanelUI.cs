@@ -4,8 +4,6 @@ using Utility;
 
 namespace UI {
     public class GameOverPanelUI : MonoBehaviour {
-        public static event System.Action On_Reset_Game;
-
         [SerializeField] private CanvasGroup _panelCanvasGroup;
         [SerializeField] private Button _resetButton;
 
@@ -22,7 +20,7 @@ namespace UI {
 
         #region Event Listeners
         private void OnResetGameClick() {
-            On_Reset_Game.Invoke();
+            Controller.GameStateController.UpdateGameState(GameState.Reset);
             _panelCanvasGroup.Disable_Group();
         }
         private void OnSudokuSolved() {
