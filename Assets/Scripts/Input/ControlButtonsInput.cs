@@ -38,9 +38,9 @@ namespace Input {
             if(number != GetNumberInputFromControlType()) return;
 
             if(isFilled) { 
-                _controlButton.DisableInteraction();
+                _controlButton.Disable_Interaction();
             } else {
-                _controlButton.EnableInteraction();
+                _controlButton.Enable_Interaction();
             }
         }
         #endregion

@@ -23,10 +23,10 @@ namespace UI {
         #region Event Listeners
         private void OnResetGameClick() {
             On_Reset_Game.Invoke();
-            _panelCanvasGroup.DisableGroup();
+            _panelCanvasGroup.Disable_Group();
         }
         private void OnSudokuSolved() {
-            _panelCanvasGroup.EnableGroup();
+            _panelCanvasGroup.Enable_Group();
         }
         #endregion
     }

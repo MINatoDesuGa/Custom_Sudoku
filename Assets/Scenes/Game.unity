@@ -1103,6 +1103,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TopUIController
   _resetButton: {fileID: 2070441101}
+  _gameModeChangeButton: {fileID: 1350666294}
+  _gameModeButtonText: {fileID: 182798216}
+  _gameModeText: {fileID: 382369986}
 --- !u!1 &129063185
 GameObject:
   m_ObjectHideFlags: 0
@@ -8726,9 +8729,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29a1d262003036b4c948096d9ee0e0c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameMode.GameModeController
-  _gameModeChangeButton: {fileID: 1350666294}
-  _gameModeButtonText: {fileID: 182798216}
-  _gameModeText: {fileID: 382369986}
 --- !u!1001 &1366988613
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8847,6 +8847,50 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6306573642877069563, guid: 4a54abe0940b7ad4583b148e40931424, type: 3}
   m_PrefabInstance: {fileID: 1366988613}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1367703398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1367703399}
+  - component: {fileID: 1367703400}
+  m_Layer: 0
+  m_Name: GameStateController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1367703399
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367703398}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1861401736}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1367703400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367703398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81bcac1127a919e488991b38b4b8fe33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Controller.GameStateController
 --- !u!1001 &1369220168
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10860,7 +10904,7 @@ GameObject:
   - component: {fileID: 1713283456}
   - component: {fileID: 1713283457}
   m_Layer: 0
-  m_Name: SudokuBoard
+  m_Name: SudokuBoardController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11560,6 +11604,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1713283456}
+  - {fileID: 1367703399}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1866210043
@@ -12626,7 +12671,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
+  m_Color: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

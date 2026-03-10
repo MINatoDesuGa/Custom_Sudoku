@@ -20,10 +20,10 @@ namespace UI {
 
         #region Public methods
         public void ChangeBGColorOnSelected() {
-            _cellBG.ChangeColor(_selectedColor);
+            _cellBG.Change_Color(_selectedColor);
         }
         public void ChangeBGColorOnDeselect() {
-            _cellBG.ChangeColor(_defaultColor);    
+            _cellBG.Change_Color(_defaultColor);    
         }
         public void ChangeNumberText(int number, TMPro.FontStyles fontStyle = TMPro.FontStyles.Normal) { 
             _numberText.SetText(number.ToString());
@@ -33,13 +33,15 @@ namespace UI {
             _numberText.SetText(string.Empty);
         }
         public void ChangeBGColorOnInputValidated(bool isValid) {
-            _cellBG.ChangeColor(isValid ? _selectedColor : _invalidColor);
+            _cellBG.Change_Color(isValid ? _selectedColor : _invalidColor);
         }
         public void SetInteractable(bool isInteractable) {
             if(isInteractable) {
-                _cellBG.EnableInteraction();
+                _cellBG.Enable_Interaction();
+                _numberText.Change_Color(Color.black);
             } else {
-                _cellBG.DisableInteraction();
+                _cellBG.Disable_Interaction();
+                _numberText.Change_Color(Color.white);
             }
         }
         #endregion

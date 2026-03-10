@@ -22,7 +22,7 @@ namespace Controller {
             _associatedInput.OnDeselect += OnDeselect;
             _associatedInput.OnNumberInput += OnNumberInput;
             _associatedInput.OnDoubleTap += ClearAssignedNumber;
-            GameModeController.On_Game_Mode_Changed += OnGameModeChanged;
+            GameStateController.On_Game_State_Changed += OnGameStateChanged;
             UI.TopPanelUI.On_Game_Reset += Reset;
             UI.GameOverPanelUI.On_Reset_Game += Reset;
         }
@@ -31,7 +31,7 @@ namespace Controller {
             _associatedInput.OnDeselect -= OnDeselect;
             _associatedInput.OnNumberInput -= OnNumberInput;
             _associatedInput.OnDoubleTap -= ClearAssignedNumber;
-            GameModeController.On_Game_Mode_Changed -= OnGameModeChanged;
+            GameStateController.On_Game_State_Changed -= OnGameStateChanged;
             UI.TopPanelUI.On_Game_Reset -= Reset;
             UI.GameOverPanelUI.On_Reset_Game -= Reset;
         }
@@ -39,25 +39,23 @@ namespace Controller {
 
         #region Event Listeners
         private void Reset() {
-            if(_data.IsEditedCell) {
+            if (_data.IsEditedCell) {
                 _associatedUI.SetInteractable(true);
             }
 
             _data.Reset();
             if (_data.IsSelected) {
-                Current_Selected_Cell_Input.ActivateActionMap(false);
-                OnDeselect();
-                Current_Selected_Cell_Input = null;
+                DisableAndResetCurrentSelectedCell();
             }
             ClearAssignedNumber();
         }
         private void OnSelect() {
-            if (GameModeController.Current_Game_Mode is GameModeType.Play
+            if (GameStateController.Current_Game_State is GameState.Solving
                 && _data.IsEditedCell) {
                 return;
             }
 
-            CheckAndUpdatePreviousSelectedCell();
+            CheckAndUpdateCurrentSelectedCell();
 
             _data.UpdateIsSelected(true);
             _associatedUI.ChangeBGColorOnSelected();
@@ -68,7 +66,7 @@ namespace Controller {
         }
         private void OnNumberInput(int number) {
             TMPro.FontStyles fontStyle = TMPro.FontStyles.Normal;
-            if (GameModeController.Current_Game_Mode is GameModeType.Edit) {
+            if (GameStateController.Current_Game_State is GameState.Editing) {
                 _data.UpdateIsEditedCell(true);
                 fontStyle = TMPro.FontStyles.Bold;
             }
@@ -78,7 +76,7 @@ namespace Controller {
 
             _data.CheckAssignedNumberFilledComplete(out bool isFilledComplete);
 
-            if(isFilledComplete) {
+            if (isFilledComplete) {
                 print($"{number} filled completed");
                 On_Number_Fill_Complete?.Invoke(number, true);
             }
@@ -86,7 +84,7 @@ namespace Controller {
             On_Data_Updated?.Invoke(this);
         }
         private void ClearAssignedNumber() {
-            if (GameModeController.Current_Game_Mode is GameModeType.Edit) {
+            if (GameStateController.Current_Game_State is GameState.Editing) {
                 _data.UpdateIsEditedCell(false);
             }
 
@@ -94,7 +92,7 @@ namespace Controller {
 
             _data.CheckAssignedNumberFilledComplete(out bool isFilledComplete);
 
-            if(isFilledComplete) {
+            if (isFilledComplete) {
                 On_Number_Fill_Complete?.Invoke(_data.AssignedNumber, false);
                 print($"{_data.AssignedNumber} was filled. Now its not");
             }
@@ -102,16 +100,18 @@ namespace Controller {
             _data.UpdateAssignedNumber(0);
             On_Data_Updated?.Invoke(this);
         }
-        private void OnGameModeChanged(GameModeType gameModeType) {
+        private void OnGameStateChanged(GameState gameState) {
             if (_data.IsSelected) {
-                Current_Selected_Cell_Input.ActivateActionMap(false);
-                OnDeselect();
-                Current_Selected_Cell_Input = null;
+                DisableAndResetCurrentSelectedCell();
             }
-            if (gameModeType is GameModeType.Edit) {
-                _associatedUI.SetInteractable(true);
-            } else {
-                _associatedUI.SetInteractable(!_data.IsEditedCell);
+
+            switch (gameState) {
+                case GameState.Solving:
+                    _associatedUI.SetInteractable(!_data.IsEditedCell);
+                    break;
+                case GameState.Editing:
+                    _associatedUI.SetInteractable(true);
+                    break;
             }
         }
         #endregion
@@ -122,13 +122,18 @@ namespace Controller {
         }
         #endregion
 
-        #region Private methods
-        private void CheckAndUpdatePreviousSelectedCell() {
+        #region Current Selected Cell Input
+        private void CheckAndUpdateCurrentSelectedCell() {
             if (Current_Selected_Cell_Input != null && Current_Selected_Cell_Input != _associatedInput) {
                 Current_Selected_Cell_Input.ActivateActionMap(false);
                 Current_Selected_Cell_Input.OnDeselect?.Invoke();
             }
             Current_Selected_Cell_Input = _associatedInput;
+        }
+        private void DisableAndResetCurrentSelectedCell() {
+            Current_Selected_Cell_Input.ActivateActionMap(false);
+            OnDeselect();
+            Current_Selected_Cell_Input = null;
         }
         #endregion
     }
