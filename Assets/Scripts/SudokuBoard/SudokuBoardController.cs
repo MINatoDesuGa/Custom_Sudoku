@@ -2,6 +2,8 @@ using UnityEngine;
 
 namespace SudokuBoard {
     public class SudokuBoardController : MonoBehaviour {
+        public static event System.Action On_Sudoku_Solved;
+
         private SudokuBoardData _sudokuBoardData;
 
         #region Mono
@@ -11,10 +13,12 @@ namespace SudokuBoard {
         private void OnEnable() {
             SudokuCell.SudokuCellController.On_Data_Updated += OnSudokuCellDataUpdated;
             UI.TopUIController.On_Game_Reset += Reset;
+            UI.GameOverUiHandler.On_Reset_Game += Reset;
         }
         private void OnDisable() {
             SudokuCell.SudokuCellController.On_Data_Updated -= OnSudokuCellDataUpdated;
             UI.TopUIController.On_Game_Reset -= Reset;
+            UI.GameOverUiHandler.On_Reset_Game -= Reset;
         }
         #endregion
 
@@ -35,6 +39,7 @@ namespace SudokuBoard {
                 if(isSudokuSolved) {
                     ///TODO: game over logic
                     print("Sudoku solved");
+                    On_Sudoku_Solved?.Invoke();
                 }
             } else {
                 print("invalid input value");
