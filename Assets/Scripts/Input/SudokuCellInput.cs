@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 namespace Input {
     public class SudokuCellInput : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
-        private const float HOLD_ACTION_TRIGGER_TIME_IN_SEC = 0.8f;
+        private const float HOLD_ACTION_TRIGGER_TIME_IN_SEC = 0.5f;
         private const float DOUBLE_TAP_ACTION_TRIGGER_TIME_IN_SEC = 0.2f;
 
 

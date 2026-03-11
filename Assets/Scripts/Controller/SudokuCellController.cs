@@ -22,6 +22,7 @@ namespace Controller {
             _associatedInput.OnDeselect += OnDeselect;
             _associatedInput.OnNumberInput += OnNumberInput;
             _associatedInput.OnDoubleTap += ClearAssignedNumber;
+            _associatedInput.OnHold += OnPencilMarkToggled;
             GameStateController.On_Game_State_Changed += OnGameStateChanged;
         }
         private void OnDisable() {
@@ -29,11 +30,11 @@ namespace Controller {
             _associatedInput.OnDeselect -= OnDeselect;
             _associatedInput.OnNumberInput -= OnNumberInput;
             _associatedInput.OnDoubleTap -= ClearAssignedNumber;
+            _associatedInput.OnHold -= OnPencilMarkToggled;
             GameStateController.On_Game_State_Changed -= OnGameStateChanged;
         }
         #endregion
 
-        #region Event Listeners
         private void Reset() {
             if (_data.IsEditedCell) {
                 _associatedUI.SetInteractable(true);
@@ -44,6 +45,18 @@ namespace Controller {
                 DisableAndResetCurrentSelectedCell();
             }
             ClearAssignedNumber();
+        }
+
+        #region Event Listeners
+        private void OnPencilMarkToggled() {
+            switch (GameStateController.Current_Game_State) {
+                case GameState.Solving:
+                    GameStateController.UpdateGameState(GameState.PencilMarking);
+                    break;
+                case GameState.PencilMarking:
+                    GameStateController.UpdateGameState(GameState.Solving);
+                    break;
+            }
         }
         private void OnSelect() {
             if (GameStateController.Current_Game_State is GameState.Solving
@@ -61,30 +74,40 @@ namespace Controller {
             _associatedUI.ChangeBGColorOnDeselect();
         }
         private void OnNumberInput(int number) {
-            TMPro.FontStyles fontStyle = TMPro.FontStyles.Normal;
-            if (GameStateController.Current_Game_State is GameState.Editing) {
-                _data.UpdateIsEditedCell(true);
-                fontStyle = TMPro.FontStyles.Bold;
+            switch (GameStateController.Current_Game_State) {
+                case GameState.Editing:
+                    _data.UpdateIsEditedCell(true);
+                    updateAndCheckAssignedNumberFilledComplete();
+                    break;
+                case GameState.Solving:
+                    updateAndCheckAssignedNumberFilledComplete();
+                    break;
+                case GameState.PencilMarking:
+                    _data.UpdatePencilMarkedNumberString(number, out string pencilMarkNumbers);
+                    _associatedUI.ChangeNumberText(pencilMarkNumbers);
+                    break;
             }
+            ///Local methods
+            void updateAndCheckAssignedNumberFilledComplete() {
+                _associatedUI.ChangeNumberText(number.ToString());
+                _data.UpdateAssignedNumber(number);
 
-            _associatedUI.ChangeNumberText(number, fontStyle);
-            _data.UpdateAssignedNumber(number);
+                _data.CheckAssignedNumberFilledComplete(out bool isFilledComplete);
 
-            _data.CheckAssignedNumberFilledComplete(out bool isFilledComplete);
+                if (isFilledComplete) {
+                    print($"{number} filled completed");
+                    On_Number_Fill_Complete?.Invoke(number, true);
+                }
 
-            if (isFilledComplete) {
-                print($"{number} filled completed");
-                On_Number_Fill_Complete?.Invoke(number, true);
+                On_Data_Updated?.Invoke(this);
             }
-
-            On_Data_Updated?.Invoke(this);
         }
         private void ClearAssignedNumber() {
             if (GameStateController.Current_Game_State is GameState.Editing) {
                 _data.UpdateIsEditedCell(false);
             }
 
-            _associatedUI.ClearNumberText();
+            _associatedUI.ChangeNumberText(string.Empty);
 
             _data.CheckAssignedNumberFilledComplete(out bool isFilledComplete);
 
@@ -97,7 +120,7 @@ namespace Controller {
             On_Data_Updated?.Invoke(this);
         }
         private void OnGameStateChanged(GameState gameState) {
-            if (_data.IsSelected) {
+            if (gameState is not GameState.PencilMarking && _data.IsSelected) {
                 DisableAndResetCurrentSelectedCell();
             }
 

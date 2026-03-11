@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace Data {
@@ -14,11 +15,10 @@ namespace Data {
         public bool IsSelected { get; private set; }
         public bool IsEditedCell { get; private set; }
 
-        private static Dictionary<int, HashSet< (int, int) >> _assignedNumberTrackingMap = new();
-        //TBD: Pencil mark 
-        //private string _pencilMarkedNumberString = string.Empty;
-
-        //private HashSet<int> _pencilMarkedNumberSet;
+        private static Dictionary<int, HashSet<(int, int)>> _assignedNumberTrackingMap = new();
+        // Pencil mark 
+        private Dictionary<int, int> _pencilMarkedNumberTrackingMap = new();
+        private StringBuilder _pencilMarkedStringBuilder = new();
 
         public void Reset() {
             AssignedNumber = 0;
@@ -30,27 +30,27 @@ namespace Data {
         #region Updaters
         public void UpdateAssignedNumber(int number) {
             var value = (Row, Col);
-            if(number == 0 && AssignedNumber != 0) {
+            if (number == 0 && AssignedNumber != 0) {
                 _assignedNumberTrackingMap[AssignedNumber].Remove(value);
             }
 
             AssignedNumber = number;
 
-            if(AssignedNumber == 0) return;
+            if (AssignedNumber == 0) return;
 
-            if(!_assignedNumberTrackingMap.ContainsKey(number)) {
-                _assignedNumberTrackingMap.Add(number, new HashSet< (int, int) >());    
+            if (!_assignedNumberTrackingMap.ContainsKey(number)) {
+                _assignedNumberTrackingMap.Add(number, new HashSet<(int, int)>());
             }
 
-            _assignedNumberTrackingMap [number].Add(value);
+            _assignedNumberTrackingMap[number].Add(value);
         }
         public void CheckAssignedNumberFilledComplete(out bool isFilledComplete) {
-            if(AssignedNumber == 0) {
+            if (AssignedNumber == 0) {
                 isFilledComplete = false;
                 return;
             }
 
-           // Debug.Log($"filled state {_assignedNumberTrackingMap[AssignedNumber].Count}");
+            // Debug.Log($"filled state {_assignedNumberTrackingMap[AssignedNumber].Count}");
             isFilledComplete = _assignedNumberTrackingMap[AssignedNumber].Count == 9;
         }
         public void UpdateIsSelected(bool isSelected) {
@@ -59,15 +59,22 @@ namespace Data {
         public void UpdateIsEditedCell(bool isEdited) {
             IsEditedCell = isEdited;
         }
-        //TBD: Pencil mark
-        //public void UpdatePencilMarkedNumberString(int number) {
-        //    if(_pencilMarkedNumberSet.Contains(number)) { 
-                
-        //    } else {
-        //        _pencilMarkedNumberSet.Add(number);
-        //        _pencilMarkedNumberString += number;
-        //    }
-        //}
+        public void UpdatePencilMarkedNumberString(int number, out string pencilMarkNumbers) {
+            if (_pencilMarkedNumberTrackingMap.ContainsKey(number)) {
+                _pencilMarkedStringBuilder.Remove(_pencilMarkedNumberTrackingMap[number], 1);
+                _pencilMarkedNumberTrackingMap.Remove(number);
+
+                var pencilMarkMapKeys = new List<int>(_pencilMarkedNumberTrackingMap.Keys);
+
+                foreach (int key in pencilMarkMapKeys) {
+                    _pencilMarkedNumberTrackingMap[key] = Mathf.Clamp(--_pencilMarkedNumberTrackingMap[key], 0, _pencilMarkedNumberTrackingMap.Count);
+                }
+            } else {
+                _pencilMarkedNumberTrackingMap.Add(number, _pencilMarkedStringBuilder.Length);
+                _pencilMarkedStringBuilder.Append(number);
+            }
+            pencilMarkNumbers = _pencilMarkedStringBuilder.ToString();
+        }
         #endregion
     }
 }
