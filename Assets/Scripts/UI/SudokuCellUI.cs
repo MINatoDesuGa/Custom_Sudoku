@@ -1,10 +1,13 @@
-using System.Text;
 using UnityEngine;
 using Utility;
 
 namespace UI {
     [RequireComponent(typeof(Input.SudokuCellInput))]
     public class SudokuCellUI : MonoBehaviour {
+        public enum State {
+            Selected, Deselected, PencilMarking
+        }
+
         [SerializeField] private UnityEngine.UI.Image _cellBG;
         [SerializeField] private TMPro.TMP_Text _numberText;
         [SerializeField] private TMPro.TMP_Text _pencilMarkText;
@@ -12,6 +15,7 @@ namespace UI {
         [Header("Settings")]
         [SerializeField] private Color _selectedColor;
         [SerializeField] private Color _invalidColor;
+        [SerializeField] private Color _pencilMarkColor;
         private Color _defaultColor;
         #region Mono
         private void Start() {
@@ -20,27 +24,32 @@ namespace UI {
         #endregion
 
         #region Public methods
-        public void ChangeBGColorOnSelected() {
-            _cellBG.Change_Color(_selectedColor);
-        }
-        public void ChangeBGColorOnDeselect() {
-            _cellBG.Change_Color(_defaultColor);
+        public void ChangeBGColor(State state) {
+            switch (state) {
+                case State.Selected:
+                    _cellBG.Change_Color(_selectedColor);
+                    break;
+                case State.Deselected:
+                    _cellBG.Change_Color(_defaultColor);
+                    break;
+                case State.PencilMarking:
+                    _cellBG.Change_Color(_pencilMarkColor);
+                    break;
+            }
         }
         public void ChangeNumberText(string numberString) {
-            string pencilMarkString = string.Empty;
             switch (Controller.GameStateController.Current_Game_State) {
                 case GameState.Editing:
                     _numberText.fontStyle = TMPro.FontStyles.Bold;
-                    _numberText.SetText(numberString);
                     break;
                 case GameState.Solving:
                     _numberText.fontStyle = TMPro.FontStyles.Normal;
-                    _numberText.SetText(numberString);
-                    break;
-                case GameState.PencilMarking:
-                    pencilMarkString = numberString;
                     break;
             }
+            _numberText.SetText(numberString);
+            ChangePencilMarkText(string.Empty);
+        }
+        public void ChangePencilMarkText(string pencilMarkString) {
             _pencilMarkText.SetText(pencilMarkString);
         }
         public void ChangeBGColorOnInputValidated(bool isValid) {
@@ -49,10 +58,8 @@ namespace UI {
         public void SetInteractable(bool isInteractable) {
             if (isInteractable) {
                 _cellBG.Enable_Interaction();
-                _numberText.Change_Color(Color.black);
             } else {
                 _cellBG.Disable_Interaction();
-                _numberText.Change_Color(Color.white);
             }
         }
         #endregion

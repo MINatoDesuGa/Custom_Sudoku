@@ -25,6 +25,8 @@ namespace Data {
             IsEditedCell = false;
             IsSelected = false;
             _assignedNumberTrackingMap.Clear();
+            _pencilMarkedNumberTrackingMap.Clear();
+            _pencilMarkedStringBuilder.Clear();
         }
 
         #region Updaters
@@ -60,21 +62,40 @@ namespace Data {
             IsEditedCell = isEdited;
         }
         public void UpdatePencilMarkedNumberString(int number, out string pencilMarkNumbers) {
+            if(number is 0) { //0 -> Clear
+                _pencilMarkedNumberTrackingMap.Clear();
+                _pencilMarkedStringBuilder.Clear();
+                pencilMarkNumbers = string.Empty;
+                return;
+            }
+
             if (_pencilMarkedNumberTrackingMap.ContainsKey(number)) {
-                _pencilMarkedStringBuilder.Remove(_pencilMarkedNumberTrackingMap[number], 1);
+                int pencilMarkedNumberStartingIndex = _pencilMarkedNumberTrackingMap[number];
+
+                _pencilMarkedStringBuilder.Remove(pencilMarkedNumberStartingIndex, 1);
                 _pencilMarkedNumberTrackingMap.Remove(number);
 
-                var pencilMarkMapKeys = new List<int>(_pencilMarkedNumberTrackingMap.Keys);
+                UpdatePencilMarkTrackingMapAfterRemoval();
+                //LOCAL FUNCTION
+                void UpdatePencilMarkTrackingMapAfterRemoval() {
+                    var pencilMarkMapKeys = new List<int>(_pencilMarkedNumberTrackingMap.Keys);
 
-                foreach (int key in pencilMarkMapKeys) {
-                    _pencilMarkedNumberTrackingMap[key] = Mathf.Clamp(--_pencilMarkedNumberTrackingMap[key], 0, _pencilMarkedNumberTrackingMap.Count);
+                    foreach (int key in pencilMarkMapKeys) {
+                        if (_pencilMarkedNumberTrackingMap[key] > pencilMarkedNumberStartingIndex) {
+                            _pencilMarkedNumberTrackingMap[key]--;
+                        }
+                    }
                 }
             } else {
                 _pencilMarkedNumberTrackingMap.Add(number, _pencilMarkedStringBuilder.Length);
                 _pencilMarkedStringBuilder.Append(number);
             }
             pencilMarkNumbers = _pencilMarkedStringBuilder.ToString();
+
+
         }
         #endregion
+
+
     }
 }

@@ -51,10 +51,17 @@ namespace Controller {
         private void OnPencilMarkToggled() {
             switch (GameStateController.Current_Game_State) {
                 case GameState.Solving:
+                    if (_data.AssignedNumber is not 0) {
+                        Debug.LogWarning("Already has assigned number. Cannot enable pencil mode");
+                        return;
+                    }
+
                     GameStateController.UpdateGameState(GameState.PencilMarking);
+                    _associatedUI.ChangeBGColor(UI.SudokuCellUI.State.PencilMarking);
                     break;
                 case GameState.PencilMarking:
                     GameStateController.UpdateGameState(GameState.Solving);
+                    //_associatedUI.ChangeBGColor(UI.SudokuCellUI.State.Selected);
                     break;
             }
         }
@@ -67,11 +74,11 @@ namespace Controller {
             CheckAndUpdateCurrentSelectedCell();
 
             _data.UpdateIsSelected(true);
-            _associatedUI.ChangeBGColorOnSelected();
+            _associatedUI.ChangeBGColor(GameStateController.Current_Game_State is not GameState.PencilMarking ? UI.SudokuCellUI.State.Selected : UI.SudokuCellUI.State.PencilMarking);
         }
         private void OnDeselect() {
             _data.UpdateIsSelected(false);
-            _associatedUI.ChangeBGColorOnDeselect();
+            _associatedUI.ChangeBGColor(UI.SudokuCellUI.State.Deselected);
         }
         private void OnNumberInput(int number) {
             switch (GameStateController.Current_Game_State) {
@@ -84,7 +91,7 @@ namespace Controller {
                     break;
                 case GameState.PencilMarking:
                     _data.UpdatePencilMarkedNumberString(number, out string pencilMarkNumbers);
-                    _associatedUI.ChangeNumberText(pencilMarkNumbers);
+                    _associatedUI.ChangePencilMarkText(pencilMarkNumbers);
                     break;
             }
             ///Local methods
@@ -103,21 +110,33 @@ namespace Controller {
             }
         }
         private void ClearAssignedNumber() {
-            if (GameStateController.Current_Game_State is GameState.Editing) {
-                _data.UpdateIsEditedCell(false);
+            switch (GameStateController.Current_Game_State) {
+                case GameState.Editing:
+                    _data.UpdateIsEditedCell(false);
+                    updateAndCheckAssignedNumberWasFilled();
+                    break;
+                case GameState.Solving:
+                    updateAndCheckAssignedNumberWasFilled();
+                    break;
+                case GameState.PencilMarking:
+                    _data.UpdatePencilMarkedNumberString(0, out string pencilMarkNumbers); //0 means erasing current pencil mark numbers
+                    _associatedUI.ChangePencilMarkText(string.Empty);
+                    break;
             }
+            ///Local methods
+            void updateAndCheckAssignedNumberWasFilled() {
+                if (_data.AssignedNumber is not 0) {
+                    _data.CheckAssignedNumberFilledComplete(out bool isFilledComplete);
 
-            _associatedUI.ChangeNumberText(string.Empty);
-
-            _data.CheckAssignedNumberFilledComplete(out bool isFilledComplete);
-
-            if (isFilledComplete) {
-                On_Number_Fill_Complete?.Invoke(_data.AssignedNumber, false);
-                print($"{_data.AssignedNumber} was filled. Now its not");
+                    if (isFilledComplete) {
+                        On_Number_Fill_Complete?.Invoke(_data.AssignedNumber, false);
+                        print($"{_data.AssignedNumber} was filled. Now its not");
+                    }
+                    _associatedUI.ChangeNumberText(string.Empty);
+                    _data.UpdateAssignedNumber(0); //0 means Erasing current assigned number
+                    On_Data_Updated?.Invoke(this);
+                }
             }
-
-            _data.UpdateAssignedNumber(0);
-            On_Data_Updated?.Invoke(this);
         }
         private void OnGameStateChanged(GameState gameState) {
             if (gameState is not GameState.PencilMarking && _data.IsSelected) {

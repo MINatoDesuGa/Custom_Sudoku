@@ -73,8 +73,9 @@ MonoBehaviour:
   _cellBG: {fileID: 5675898458816269228}
   _numberText: {fileID: 780403232212133151}
   _pencilMarkText: {fileID: 2063840665797247733}
-  _selectedColor: {r: 1, g: 0.9671434, b: 0.2971698, a: 1}
+  _selectedColor: {r: 1, g: 0.95530725, b: 0, a: 1}
   _invalidColor: {r: 1, g: 0, b: 0, a: 1}
+  _pencilMarkColor: {r: 1, g: 0.98132074, b: 0.5330188, a: 1}
 --- !u!114 &2571072737077659054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,7 +311,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 5}
-  m_SizeDelta: {x: -10, y: 50}
+  m_SizeDelta: {x: -10, y: 30}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &95354406977144569
 CanvasRenderer:
@@ -349,8 +350,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286414205
-  m_fontColor: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
+    rgba: 4287203721
+  m_fontColor: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
