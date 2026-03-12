@@ -17,6 +17,9 @@ namespace Controller {
             _associatedInput = GetComponent<Input.SudokuCellInput>();
             _associatedUI = GetComponent<UI.SudokuCellUI>();
         }
+        private void Start() {
+            _data.AssignCellGroup();
+        }
         private void OnEnable() {
             _associatedInput.OnSelect += OnSelect;
             _associatedInput.OnDeselect += OnDeselect;
@@ -24,6 +27,7 @@ namespace Controller {
             _associatedInput.OnDoubleTap += ClearAssignedNumber;
             _associatedInput.OnHold += OnPencilMarkToggled;
             GameStateController.On_Game_State_Changed += OnGameStateChanged;
+            On_Data_Updated += OnCellDataUpdated;
         }
         private void OnDisable() {
             _associatedInput.OnSelect -= OnSelect;
@@ -32,6 +36,7 @@ namespace Controller {
             _associatedInput.OnDoubleTap -= ClearAssignedNumber;
             _associatedInput.OnHold -= OnPencilMarkToggled;
             GameStateController.On_Game_State_Changed -= OnGameStateChanged;
+            On_Data_Updated -= OnCellDataUpdated;
         }
         #endregion
 
@@ -48,10 +53,32 @@ namespace Controller {
         }
 
         #region Event Listeners
+        private void OnCellDataUpdated(SudokuCellController sourceSudokuCellController) {
+            if (GameStateController.Current_Game_State is not GameState.Solving ||
+                _data.PencilMarkedNumberTrackingMap.Count is 0 || sourceSudokuCellController == this) {
+                return;
+            }
+
+            int sourceAssignedNumber = sourceSudokuCellController.CellData.AssignedNumber;
+
+            if (sourceAssignedNumber is Data.SudokuCellData.EMPTY_CELL_NUMBER || _data.AssignedNumber is not Data.SudokuCellData.EMPTY_CELL_NUMBER) return;
+
+            int sourceRow = sourceSudokuCellController.CellData.Row;
+            int sourceCol = sourceSudokuCellController.CellData.Col;
+            (int, int) sourceCellGroup = sourceSudokuCellController.CellData.CellGroup;
+
+            //check row / col / group for pencil marks
+            if (_data.Row == sourceRow || _data.Col == sourceCol || _data.CellGroup == sourceCellGroup) {
+                if (_data.PencilMarkedNumberTrackingMap.ContainsKey(sourceAssignedNumber)) {
+                    _data.UpdatePencilMarkedNumberString(sourceAssignedNumber, out string pencilMarkNumbers);
+                    _associatedUI.ChangePencilMarkText(pencilMarkNumbers);
+                }
+            }
+        }
         private void OnPencilMarkToggled() {
             switch (GameStateController.Current_Game_State) {
                 case GameState.Solving:
-                    if (_data.AssignedNumber is not 0) {
+                    if (_data.AssignedNumber is not Data.SudokuCellData.EMPTY_CELL_NUMBER) {
                         Debug.LogWarning("Already has assigned number. Cannot enable pencil mode");
                         return;
                     }
@@ -119,13 +146,13 @@ namespace Controller {
                     updateAndCheckAssignedNumberWasFilled();
                     break;
                 case GameState.PencilMarking:
-                    _data.UpdatePencilMarkedNumberString(0, out string pencilMarkNumbers); //0 means erasing current pencil mark numbers
+                    _data.UpdatePencilMarkedNumberString(Data.SudokuCellData.EMPTY_CELL_NUMBER, out string pencilMarkNumbers); //0 means erasing current pencil mark numbers
                     _associatedUI.ChangePencilMarkText(string.Empty);
                     break;
             }
             ///Local methods
             void updateAndCheckAssignedNumberWasFilled() {
-                if (_data.AssignedNumber is not 0) {
+                if (_data.AssignedNumber is not Data.SudokuCellData.EMPTY_CELL_NUMBER) {
                     _data.CheckAssignedNumberFilledComplete(out bool isFilledComplete);
 
                     if (isFilledComplete) {
@@ -133,7 +160,7 @@ namespace Controller {
                         print($"{_data.AssignedNumber} was filled. Now its not");
                     }
                     _associatedUI.ChangeNumberText(string.Empty);
-                    _data.UpdateAssignedNumber(0); //0 means Erasing current assigned number
+                    _data.UpdateAssignedNumber(Data.SudokuCellData.EMPTY_CELL_NUMBER);
                     On_Data_Updated?.Invoke(this);
                 }
             }
