@@ -9,7 +9,7 @@ namespace Controller {
         public static Input.SudokuCellInput Current_Selected_Cell_Input { get; private set; } //keep track of previous cell to disable
 
         [SerializeField] private Data.SudokuCellData _data;
-        public Data.SudokuCellData CellData { get { return _data; } }
+        public Data.SudokuCellData CellData { get { return _data; } set { _data = value; } }
         private Input.SudokuCellInput _associatedInput;
         private UI.SudokuCellUI _associatedUI;
         #region Mono
@@ -44,12 +44,12 @@ namespace Controller {
             if (_data.IsEditedCell) {
                 _associatedUI.SetInteractable(true);
             }
-
-            _data.Reset();
             if (_data.IsSelected) {
                 DisableAndResetCurrentSelectedCell();
             }
-            ClearAssignedNumber();
+            _associatedUI.ChangeNumberText(string.Empty);
+            _associatedUI.ChangePencilMarkText(string.Empty);
+            _data.Reset();
         }
 
         #region Event Listeners
@@ -140,29 +140,28 @@ namespace Controller {
             switch (GameStateController.Current_Game_State) {
                 case GameState.Editing:
                     _data.UpdateIsEditedCell(false);
-                    updateAndCheckAssignedNumberWasFilled();
+                    UpdateAndCheckAssignedNumberWasFilled();
                     break;
                 case GameState.Solving:
-                    updateAndCheckAssignedNumberWasFilled();
+                    UpdateAndCheckAssignedNumberWasFilled();
                     break;
                 case GameState.PencilMarking:
                     _data.UpdatePencilMarkedNumberString(Data.SudokuCellData.EMPTY_CELL_NUMBER, out string pencilMarkNumbers); //0 means erasing current pencil mark numbers
                     _associatedUI.ChangePencilMarkText(string.Empty);
                     break;
             }
-            ///Local methods
-            void updateAndCheckAssignedNumberWasFilled() {
-                if (_data.AssignedNumber is not Data.SudokuCellData.EMPTY_CELL_NUMBER) {
-                    _data.CheckAssignedNumberFilledComplete(out bool isFilledComplete);
+        }
+        private void UpdateAndCheckAssignedNumberWasFilled() {
+            if (_data.AssignedNumber is not Data.SudokuCellData.EMPTY_CELL_NUMBER) {
+                _data.CheckAssignedNumberFilledComplete(out bool isFilledComplete);
 
-                    if (isFilledComplete) {
-                        On_Number_Fill_Complete?.Invoke(_data.AssignedNumber, false);
-                        print($"{_data.AssignedNumber} was filled. Now its not");
-                    }
-                    _associatedUI.ChangeNumberText(string.Empty);
-                    _data.UpdateAssignedNumber(Data.SudokuCellData.EMPTY_CELL_NUMBER);
-                    On_Data_Updated?.Invoke(this);
+                if (isFilledComplete) {
+                    On_Number_Fill_Complete?.Invoke(_data.AssignedNumber, false);
+                    print($"{_data.AssignedNumber} was filled. Now its not");
                 }
+                _associatedUI.ChangeNumberText(string.Empty);
+                _data.UpdateAssignedNumber(Data.SudokuCellData.EMPTY_CELL_NUMBER);
+                On_Data_Updated?.Invoke(this);
             }
         }
         private void OnGameStateChanged(GameState gameState) {
@@ -185,7 +184,7 @@ namespace Controller {
         #endregion
 
         #region Public methods
-        public void OnInputValidated(bool isValid) {
+        public void OnInputValidated(bool isValid) { ///TODO: To be integrated in assisted mode
             //_associatedUI.ChangeBGColorOnInputValidated(isValid);
         }
         #endregion
